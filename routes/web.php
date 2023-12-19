@@ -26,7 +26,17 @@ Route::get('/', function () {
     if(Auth::check()) {
         return Auth::user()->admin ? redirect()->route('admin.home') : redirect()->route('resident.home');
     }
-    return view('welcome');
+    return redirect()->route('guest.home');
+});
+
+// Guest Route
+Route::group(['prefix' => 'guest', 'as' => 'guest.'], function() {
+    Route::get('/', function() {
+        return view('index');
+    })->name('home');
+
+    // Contact Us Route
+    Route::resource('contact-us', ContactUsController::class);
 });
 
 // Resident Route

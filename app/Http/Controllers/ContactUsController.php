@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactUsController extends Controller
 {
@@ -11,7 +12,7 @@ class ContactUsController extends Controller
      */
     public function index(Request $request)
     {
-        $prefix = $request->user()->admin ? 'admin' : 'resident';
+        $prefix = Auth::check() ? ($request->user()->admin ? 'admin' : 'resident') : 'guest';
         return view($prefix.'.contact-us.index');
     }
 

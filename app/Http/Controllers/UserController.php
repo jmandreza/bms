@@ -12,9 +12,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::with('resident')->whereHas('resident', function($query) {
-            $query->where('admin', false);
-        })->latest('updated_at')->get();
+        $users = User::with('resident')->whereHas('resident')->where('admin', false)->latest('updated_at')->get();
         return view('admin.users.index')->with(['users' => $users]);
     }
 

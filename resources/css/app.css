@@ -1,3 +1,6 @@
+@import url('./cloak.css');
+@import url('./dialog.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -1,7 +1,7 @@
-<x-app-layout>
+<x-guest-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Admin Document Request Status') }}
+            {{ __('Contact Us') }}
         </h2>
     </x-slot>
 
@@ -13,10 +13,4 @@
             </div>
         </div>
     </div>
-
-    <x-section>
-        <x-container>
-            @include('admin.request-status.requests')
-        </x-container>
-    </x-section>
-</x-app-layout>
+</x-guest-layout>

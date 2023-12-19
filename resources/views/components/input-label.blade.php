@@ -1,5 +1,12 @@
-@props(['value'])
+@props(['value', 'associate' => true])
 
-<label {{ $attributes->merge(['class' => 'block font-medium text-sm text-gray-700']) }}>
+
+@if($associate)
+<label {{ $attributes->merge(['class' => 'block font-semibold text-sm text-gray-700']) }}>
     {{ $value ?? $slot }}
 </label>
+@else
+<p {{ $attributes->merge(['class' => 'block font-semibold text-sm text-gray-700']) }}>
+    {{ $value ?? $slot }}
+</p>
+@endif

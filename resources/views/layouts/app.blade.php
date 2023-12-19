@@ -33,4 +33,8 @@
             </main>
         </div>
     </body>
+
+    @if(!Auth::user()->admin)
+        @include('layouts.footer')
+    @endif
 </html>

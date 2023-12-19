@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="sticky top-0 bg-white border-b border-gray-100 z-50">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -12,34 +12,45 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    @if(Auth::user()->admin)
-                    <x-nav-link :href="url('/')" :active="request()->routeIs('admin.home')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('admin.request-status.index')" :active="request()->routeIs('admin.request-staus.*')">
-                        {{ __('Document Management') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
-                        {{ __('User Management') }}
-                    </x-nav-link>
+                    <!-- Admin Route -->
+                    @if(Auth::user()?->admin ?? false)
+                        <x-nav-link :href="url('/')" :active="request()->routeIs('admin.home')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.request-status.index')" :active="request()->routeIs('admin.request-status.*')">
+                            {{ __('Document Management') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                            {{ __('User Management') }}
+                        </x-nav-link>
+
+                    <!-- Resident/Guest route -->
                     @else
-                    <x-nav-link :href="url('/')" :active="request()->routeIs('resident.home')">
-                        {{ __('Home') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('resident.request.index')" :active="request()->routeIs('resident.resident.*')">
-                        {{ __('Document Request') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('resident.request-status.index')" :active="request()->routeIs('resident.request-status.*')">
-                        {{ __('My Requests') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('resident.contact-us.index')" :active="request()->routeIs('resident.contact-us.*')">
-                        {{ __('Contact Us') }}
-                    </x-nav-link>
+                        <x-nav-link :href="url('/')" :active="request()->routeIs('resident.home') || request()->routeIs('guest.home')">
+                            {{ __('Home') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('resident.request.index')" :active="request()->routeIs('resident.request.*')">
+                            {{ __('Document Request') }}
+                        </x-nav-link>
+                        @if(Auth::check())
+                            <x-nav-link :href="route('resident.request-status.index')" :active="request()->routeIs('resident.request-status.*')">
+                                {{ __('My Requests') }}
+                            </x-nav-link>
+
+                            <x-nav-link :href="route('resident.contact-us.index')" :active="request()->routeIs('resident.contact-us.*')">
+                                {{ __('Contact Us') }}
+                            </x-nav-link>
+                        @else
+                            <x-nav-link :href="route('guest.contact-us.index')" :active="request()->routeIs('guest.contact-us.*')">
+                                {{ __('Contact Us') }}
+                            </x-nav-link>
+                        @endif
                     @endif
                 </div>
             </div>
 
             <!-- Settings Dropdown -->
+            @if(Auth::check())
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -72,6 +83,17 @@
                     </x-slot>
                 </x-dropdown>
             </div>
+            @else
+            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
+                    {{ __('Login') }}
+                </x-nav-link>
+
+                <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
+                    {{ __('Register') }}
+                </x-nav-link>
+            </div>
+            @endif
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
@@ -86,36 +108,54 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    <div x-cloak 
+        x-show="open"
+        x-on:click.outside="open = false"
+        x-transition:enter="ease-out duration-200"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="fixed max-h-[calc(100%-4rem)] w-full overflow-y-auto bg-white shadow-md">
+
         <div class="pt-2 pb-3 space-y-1">
-            @if(Auth::user()->admin)
-            <x-responsive-nav-link :href="url('/')" :active="request()->routeIs('admin.home')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('admin.request-status.index')" :active="request()->routeIs('admin.request-staus.*')">
-                {{ __('Document Management') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
-                {{ __('User Management') }}
-            </x-responsive-nav-link>
+            @if(Auth::user()?->admin ?? false)
+                <x-responsive-nav-link :href="url('/')" :active="request()->routeIs('admin.home')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.request-status.index')" :active="request()->routeIs('admin.request-status.*')">
+                    {{ __('Document Management') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                    {{ __('User Management') }}
+                </x-responsive-nav-link>
             @else
-            <x-responsive-nav-link :href="url('/')" :active="request()->routeIs('resident.home')">
-                {{ __('Home') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('resident.request.index')" :active="request()->routeIs('resident.resident.*')">
-                {{ __('Document Request') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('resident.request-status.index')" :active="request()->routeIs('resident.request-status.*')">
-                {{ __('My Requests') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('resident.contact-us.index')" :active="request()->routeIs('resident.contact-us.*')">
-                {{ __('Contact Us') }}
-            </x-responsive-nav-link>
+                <x-responsive-nav-link :href="url('/')" :active="request()->routeIs('resident.home') || request()->routeIs('/')">
+                    {{ __('Home') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('resident.request.index')" :active="request()->routeIs('resident.request.*')">
+                    {{ __('Document Request') }}
+                </x-responsive-nav-link>
+                @if(Auth::check())
+                    <x-responsive-nav-link :href="route('resident.request-status.index')" :active="request()->routeIs('resident.request-status.*')">
+                        {{ __('My Requests') }}
+                    </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('resident.contact-us.index')" :active="request()->routeIs('guest.contact-us.*') || request()->routeIs('resident.contact-us.*')">
+                        {{ __('Contact Us') }}
+                    </x-responsive-nav-link>
+                @else
+                    <x-responsive-nav-link :href="route('resident.contact-us.index')" :active="request()->routeIs('guest.contact-us.*') || request()->routeIs('resident.contact-us.*')">
+                        {{ __('Contact Us') }}
+                    </x-responsive-nav-link>
+                @endif
             @endif
         </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
+            @if(Auth::check())
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->username }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
@@ -137,6 +177,22 @@
                     </x-responsive-nav-link>
                 </form>
             </div>
+            
+            @else
+            <div class="px-4">
+                <div class="font-medium text-base text-gray-800">Guest User</div>
+                <div class="font-medium text-sm text-gray-500">You are not logged in</div>
+            </div>
+            
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login')">
+                    {{ __('Login') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('register')">
+                    {{ __('Register') }}
+                </x-responsive-nav-link>
+            </div>
+            @endif
         </div>
     </div>
 </nav>
