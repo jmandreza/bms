@@ -1,7 +1,16 @@
 @props([
     'bg' => 'bg-white',
+    'padding' => 'px-2 sm:px-4 md:px-6 lg:px-8 py-6'
 ])
 
-<div {{$attributes->merge(['class' => "w-full px-4 sm:px-6 py-6 $bg shadow-sm sm:rounded-lg"])}} class="">
+@php
+    if($bg !== 'bg-transparent') {
+        $bg .= ' shadow-md';
+    }
+@endphp
+
+
+
+<div {{$attributes->merge(['class' => "w-full $padding $bg sm:rounded-lg"])}}>
     {{$slot}}
 </div>

@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('document_id')->constrained()->onDelete('cascade');
             $table->text('purpose');
-            $table->string('status', 15);
-            $table->string('cert_id', 16);
+            $table->string('status', 15)->default(App\Enums\StatusEnum::Pending);
+            $table->string('cert_id', 16)->unique()->nullable();
             $table->timestamps();
         });
     }

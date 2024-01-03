@@ -2,7 +2,7 @@
     <form method="POST" action="{{ route('register') }}" x-data="{activeTab : 1, active: 'border-indigo-400 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out', inactive: 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out'}" >
         @csrf
         
-        <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+        <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200">
             <!-- Tab -->
             <div class="flex gap-x-2 -mb-px overflow-x-auto">
                 <button type="button" class="px-6 py-4 border-b-2 text-sm font-medium leading-5" :class="(activeTab === 1) ? active : inactive" x-data x-on:click.prevent="activeTab = 1">Personal</button>
@@ -24,7 +24,7 @@
             @include('auth.partials.account')
         </div>
 
-        <div>
+        <div class="mt-6">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
             </a>

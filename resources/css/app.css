@@ -1,5 +1,7 @@
 @import url('./cloak.css');
 @import url('./dialog.css');
+@import url('./toast.css');
+@import url('./datatable.css');
 
 @tailwind base;
 @tailwind components;

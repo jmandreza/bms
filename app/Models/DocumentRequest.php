@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Document;
 use App\Models\User;
+use App\Enums\StatusEnum;
 
 class DocumentRequest extends Model
 {
@@ -31,5 +32,7 @@ class DocumentRequest extends Model
     ];
 
     protected $hidden = [];
-    protected $casts = [];
+    protected $casts = [
+        'status' => StatusEnum::class,
+    ];
 }

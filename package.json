@@ -17,8 +17,14 @@
     },
     "dependencies": {
         "@tailwindcss/typography": "^0.5.10",
+        "chart.js": "^4.4.1",
         "datatables.net": "^1.13.8",
+        "html5-qrcode": "^2.3.8",
         "jquery": "^3.7.1",
+        "jquery-mask-plugin": "^1.14.16",
+        "laravel-echo": "^1.15.3",
+        "push.js": "^1.0.12",
+        "pusher-js": "^8.4.0-rc2",
         "sweetalert2": "^11.10.1"
     }
 }

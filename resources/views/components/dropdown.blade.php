@@ -1,4 +1,9 @@
-@props(['align' => 'right', 'width' => '48', 'contentClasses' => 'py-1 bg-white'])
+@props([
+    'align' => 'right',
+    'width' => '48',
+    'contentClasses' => 'py-1 bg-white',
+    'dismissOnClick' => true
+])
 
 @php
 switch ($align) {
@@ -18,10 +23,13 @@ switch ($width) {
     case '48':
         $width = 'w-48';
         break;
+    case '64':
+        $width = 'w-64';
+        break;
 }
 @endphp
 
-<div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
+<div class="relative" x-data="{ open: false, dismissOnClick : @js($dismissOnClick) }" @click.outside="open = false" @close.stop="open = false">
     <div @click="open = ! open">
         {{ $trigger }}
     </div>
@@ -35,7 +43,7 @@ switch ($width) {
             x-transition:leave-end="opacity-0 scale-95"
             class="absolute z-50 mt-2 {{ $width }} rounded-md shadow-lg {{ $alignmentClasses }}"
             style="display: none;"
-            @click="open = false">
+            @click ="open = !dismissOnClick">
         <div class="rounded-md ring-1 ring-black ring-opacity-5 {{ $contentClasses }}">
             {{ $content }}
         </div>

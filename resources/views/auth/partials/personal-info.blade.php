@@ -49,6 +49,6 @@
 <!-- Phone Number -->
 <div>
     <x-input-label for="phone-field" :value="__('Phone Number')" />
-    <x-text-input id="phone-field" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')" required autofocus autocomplete="name" />
+    <x-text-input id="phone-field" class="block mt-1 w-full" type="text" name="phone" :value="old('phone')" data-mask="00000000000" required autofocus autocomplete="name" />
     <x-input-error :messages="$errors->get('phone')" class="mt-2" />
 </div>

@@ -1,7 +1,5 @@
 <x-guest-layout>
-    <x-section>
-        <x-container>
-            
-        </x-container>
-    </x-section>
+    <x-slot name="header">
+        <x-header title="Landing Page" />
+    </x-slot>
 </x-guest-layout>

@@ -20,11 +20,7 @@
 
             <!-- Page Heading -->
             @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
+                {{ $header }}
             @endif
 
             <!-- Page Content -->
@@ -37,4 +33,50 @@
     @if(!Auth::user()->admin)
         @include('layouts.footer')
     @endif
+
+    <script type="module">
+        let loader;
+        let container;
+        let counter;
+
+        $(function() {
+            loader = $("#notification-loader");
+            container = $("#notification-container");
+            counter = $("#notification-counter");
+
+            Push.check();
+            loader.show('fast', 'linear');
+        });
+
+        Echo.private("notification-channel-{{Auth::id()}}").on("pusher:subscription_succeeded", function(data) {
+                // Load Notification
+                Method.getNotification({
+                    link: "{{ route('unread') }}",
+                    container: container,
+                    counter: counter,
+                });
+                loader.hide('fast', 'linear');
+            }).listen('.notification-event', function(data) {
+                let user;
+                // Load Notification
+                Method.getNotification({
+                    link: "{{ route('unread') }}",
+                    container: container,
+                    counter: counter,
+                });
+
+                if(data.user.username) {
+                    user = data.user.username
+                }
+                else {
+                    user = `${data.user.lname}, ${data.user.fname}`;
+                }
+                
+                Push.create({
+                    title: "New Notification",
+                    message: `${user} ${data.message}`,
+                    link: data.link,
+                });
+            });
+    </script>
 </html>
