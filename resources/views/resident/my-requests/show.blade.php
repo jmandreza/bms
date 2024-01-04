@@ -38,7 +38,7 @@
                         <td class="py-1 pl-4">{{$request->status}}</td>
                     </tr>
                     <tr>
-                        <td class="font-semibold">Date Rquested</td>
+                        <td class="font-semibold">Date Requested</td>
                         <td class="py-1 pl-4">{{Carbon\Carbon::parse($request->created_at)->format('F d, Y \a\\t h:i A')}}</td>
                     </tr>
                     <tr>

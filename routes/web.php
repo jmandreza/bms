@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\ConcernsController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentRequestController;
 use App\Http\Controllers\HistoryController;
@@ -69,6 +70,7 @@ Route::group(['middleware' => ['auth', 'resident'], 'prefix' => 'resident', 'as'
 // Admin Route
 Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin', 'as' => 'admin.'], function() {
     // Dashboard Route
+    Route::post('/statictics/filter', [HomeController::class, 'filterData'])->name('filter-statistics');
     Route::get('/statistics', [HomeController::class, 'getData'])->name('get-statistics');
     Route::get('/', [HomeController::class, 'admin'])->name('home');
 
@@ -85,6 +87,11 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin', 'as' => 'a
     Route::get('history', [HistoryController::class, 'index'])->name('history.index');
     Route::get('history/{request}/preview', [HistoryController::class, 'preview'])->name('history.preview');
     Route::post('history/search', [HistoryController::class, 'search'])->name('history.search');
+
+    // Concerns Route
+    Route::post('concerns/search', [ConcernsController::class, 'search'])->name('concerns.search');
+    Route::get('concerns/{preview}/preview', [ConcernsController::class, 'preview'])->name('concerns.preview');
+    Route::resource('concerns', ConcernsController::class)->only(['index', 'show', 'update']);
 });
 
 // Notification Route for all user type

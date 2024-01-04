@@ -16,16 +16,24 @@
             <x-cell type="td">{{Str::limit($request->purpose, 100, '...')}}</x-cell>
             <x-cell type="td">{{$request->status}}</x-cell>
             <x-cell type="td">
-                @if(isset($request->cert_id))
-                    <x-qr-code :key="$request->cert_id" />
-                @endif
+                <div class="flex justify-center">
+                    @if(isset($request->cert_id))
+                        <x-qr-code :key="$request->cert_id" :size="64" />
+                    @else
+                        <div class="flex items-center justify-center border-2 border-gray-800 text-xs w-16 h-16">
+                            null
+                        </div>
+                    @endif
+                </div>
             </x-cell>
             <x-cell type="td">{{Carbon\Carbon::parse($request->created_at)->format('M d, Y \a\\t h:i A')}}</x-cell>
             <x-cell type="td">{{Carbon\Carbon::parse($request->updated_at)->diffForHumans()}}</x-cell>
-            <x-cell type="td" class="flex justify-center">
-                <a href="{{route('resident.my-request.preview', $request)}}" class="show-preview-link" x-data x-on:click.prevent="$dispatch('open-modal', 'show-preview')">
-                    <x-primary-button id="show-preview-button">Preview</x-primary-button>
-                </a>
+            <x-cell type="td">
+                <div class="flex justify-center">
+                    <a href="{{route('resident.my-request.preview', $request)}}" class="show-preview-link" x-data x-on:click.prevent="$dispatch('open-modal', 'show-preview')">
+                        <x-primary-button id="show-preview-button">Preview</x-primary-button>
+                    </a>
+                </div>
             </x-cell>
         </tr>
         @empty

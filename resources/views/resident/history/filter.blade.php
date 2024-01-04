@@ -1,4 +1,4 @@
-<x-dropdown align="right" width="64" :dismissOnClick="false">
+<x-filter>
     <x-slot name="trigger">
         <x-secondary-button>
             <p>Filter</p>
@@ -24,39 +24,33 @@
         </div>
         
         <p class="p-2 text-xs text-gray-800 font-bold uppercase leading-none">Filter by Status</p>
-        <ul class="space-y-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownRadioButton">
+        <ul class="text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownRadioButton">
             <li class="hover:bg-gray-100">
-                <div class="px-4 py-2">
-                    <x-input-label for="status-filter-none" class="flex items-center gap-x-2">
-                        <x-checkbox type="radio" id="status-filter-none" name="status_filter" value="" />
-                        All
-                    </x-input-label>
-                </div>
+                <x-input-label for="status-filter-none" class="flex items-center px-4 py-2 gap-x-2">
+                    <x-checkbox type="radio" id="status-filter-none" name="status_filter" value="" />
+                    All
+                </x-input-label>
             </li>
             <li class="hover:bg-gray-100">
-                <div class="px-4 py-2">
-                    <x-input-label for="status-filter-{{App\Enums\StatusEnum::Declined}}" class="flex items-center gap-x-2">
-                        <x-checkbox type="radio" id="status-filter-{{App\Enums\StatusEnum::Declined}}" name="status_filter" value="{{App\Enums\StatusEnum::Declined}}" />
-                        {{ucfirst(App\Enums\StatusEnum::Declined->value)}}
-                    </x-input-label>
-                </div>
+                <x-input-label for="status-filter-{{App\Enums\StatusEnum::Declined}}" class="flex items-center px-4 py-2 gap-x-2">
+                    <x-checkbox type="radio" id="status-filter-{{App\Enums\StatusEnum::Declined}}" name="status_filter" value="{{App\Enums\StatusEnum::Declined}}" />
+                    {{ucfirst(App\Enums\StatusEnum::Declined->value)}}
+                </x-input-label>
             </li>
             <li class="hover:bg-gray-100">
-                <div class="px-4 py-2">
-                    <x-input-label for="status-filter-{{App\Enums\StatusEnum::Completed}}" class="flex items-center gap-x-2">
-                        <x-checkbox type="radio" id="status-filter-{{App\Enums\StatusEnum::Completed}}" name="status_filter" value="{{App\Enums\StatusEnum::Completed}}" />
-                        {{ucfirst(App\Enums\StatusEnum::Completed->value)}}
-                    </x-input-label>
-                </div>
+                <x-input-label for="status-filter-{{App\Enums\StatusEnum::Completed}}" class="flex items-center px-4 py-2 gap-x-2">
+                    <x-checkbox type="radio" id="status-filter-{{App\Enums\StatusEnum::Completed}}" name="status_filter" value="{{App\Enums\StatusEnum::Completed}}" />
+                    {{ucfirst(App\Enums\StatusEnum::Completed->value)}}
+                </x-input-label>
             </li>
         </ul>
         
         <div class="p-2 mt-2 flex gap-x-2 justify-end">
-            <x-secondary-button id="reset-filter-button">Reset</x-secondary-button>
-            <x-primary-button type="submit">Filter</x-primary-button>
+            <x-secondary-button id="reset-filter-button" x-data x-on:click="filterOpen = false">Reset</x-secondary-button>
+            <x-primary-button type="submit" x-data x-on:click="filterOpen = false">Filter</x-primary-button>
         </div>
     </x-slot>
-</x-dropdown>
+</x-filter>
 
 <script type="module">
     $('#reset-filter-button').click(function(e) {

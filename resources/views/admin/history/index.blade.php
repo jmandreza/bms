@@ -8,10 +8,12 @@
             <form id="history-search-form" class="flex flex-col sm:flex-row gap-2 sm:justify-between" action="{{route('admin.history.search')}}" method="post">
                 @csrf
                 
-                @include('admin.history.filter')
+                <div class="self-center">
+                   @include('admin.history.filter') 
+                </div>
                 
                 <div class="flex w-full sm:w-2/3 md:w-1/2 gap-x-2">
-                    <x-text-input type="text" name="search" id="search-field" placeholder="Search here... " class="w-full" />
+                    <x-text-input type="text" name="search" id="search-field" placeholder="Search here... " class="w-full" autocomplete="off" />
                     <x-primary-button type="submit">Search</x-primary-button>
                 </div>
             </form>

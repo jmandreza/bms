@@ -20,11 +20,14 @@
                         <x-nav-link :href="route('admin.document-request.index')" :active="request()->routeIs('admin.document-request.*')">
                             {{ __('Requests') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.history.index')" :active="request()->routeIs('admin.history.*')">
+                            {{ __('History') }}
+                        </x-nav-link>
                         <x-nav-link :href="route('admin.residents.index')" :active="request()->routeIs('admin.residents.*')">
                             {{ __('Residents') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('admin.history.index')" :active="request()->routeIs('admin.history.*')">
-                            {{ __('History') }}
+                        <x-nav-link :href="route('admin.concerns.index')" :active="request()->routeIs('admin.concerns.*')">
+                            {{ __('Concerns') }}
                         </x-nav-link>
 
                     <!-- Resident/Guest route -->
@@ -143,11 +146,14 @@
                 <x-responsive-nav-link :href="route('admin.document-request.index')" :active="request()->routeIs('admin.document-request.*')">
                     {{ __('Requests') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.history.index')" :active="request()->routeIs('admin.history.*')">
+                    {{ __('History') }}
+                </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.residents.index')" :active="request()->routeIs('admin.residents.*')">
                     {{ __('Residents') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('admin.history.index')" :active="request()->routeIs('admin.history.*')">
-                    {{ __('History') }}
+                <x-responsive-nav-link :href="route('admin.concerns.index')" :active="request()->routeIs('admin.concerns.*')">
+                    {{ __('Concerns') }}
                 </x-responsive-nav-link>
             @else
                 <x-responsive-nav-link :href="url('/')" :active="request()->routeIs('resident.home') || request()->routeIs('guest.home')">

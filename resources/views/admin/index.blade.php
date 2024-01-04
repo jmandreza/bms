@@ -12,7 +12,26 @@
                     <p class="text-xl text-gray-800 font-semibold">Document Requests</p>
                     <x-link :href="route('admin.residents.index')">View More ></x-link>
                 </div>
-                <div class="w-full h-96 max-h-96">
+
+                <form id="filter-request-date-form" action="{{route('admin.filter-statistics')}}" method="post" class="flex flex-col sm:flex-row sm:justify-end gap-2">
+                    @csrf
+
+                    <div>
+                        <x-input-label for="date-from-field" value="Starting Date" />
+                        <x-text-input type="date" id="date-from-field" name="date_from" :value="Carbon\Carbon::now()->subDays(13)->format('Y-m-d')" class="w-full sm:w-auto" />
+                    </div>
+                    <div>
+                        <x-input-label for="date-to-field" value="End Date" />
+                        <x-text-input type="date" id="date-to-field" name="date_to" :value="Carbon\Carbon::now()->format('Y-m-d')" class="w-full sm:w-auto" />
+                    </div>
+
+                    <div class="flex justify-end sm:justify-start gap-x-2">
+                        <x-primary-button type="submit" class="self-end">Filter</x-primary-button>
+                        <x-danger-button id="reset-button" class="self-end">Reset</x-danger-button>
+                    </div>
+                </form>
+
+                <div class="w-full h-96 sm:h-72 max-h-96 sm:max-h-72">
                     <canvas id="request-canvas"></canvas>
                 </div>
             </div>
@@ -22,7 +41,7 @@
                 <div>
                     <p class="text-xl text-gray-800 font-semibold leading-none">Requests</p>
                     <x-link :href="route('admin.residents.index')">View More ></x-link>
-                </div>
+                </div>                
                 
                 <div class="mx-auto w-2/3 sm:w-4/5 lg:w-full">
                     <canvas id="request-status-canvas"></canvas>
@@ -80,10 +99,14 @@
     </x-section>
 
     <script type="module">
-        $(function() {
-            let requestCanvas;
-            let genderCanvas;
+        var requestCanvas;
+        var statusCanvas;
+        var genderCanvas;
+        var fourpsCanvas;
+        var fullyVaxxedCanvas;
+        var voterCanvas;
 
+        $(function() {
             // Fetch Statistics
             $.get('{!! route("admin.get-statistics") !!}', function(data, status) {
                 if(data.success) {
@@ -96,7 +119,7 @@
                     });
 
                     // Load Request Status Chart
-                    genderCanvas = Chart({
+                    statusCanvas = Chart({
                         canvas: $("#request-status-canvas"),
                         dataset: data.status,
                         type: 'doughnut',
@@ -112,7 +135,7 @@
                     });
 
                     // Load 4PS Member Chart
-                    genderCanvas = Chart({
+                    fourpsCanvas = Chart({
                         canvas: $("#fourps-member-canvas"),
                         dataset: data.fourps,
                         type: 'doughnut',
@@ -120,7 +143,7 @@
                     });
 
                     // Load Fully Vaccinated Chart
-                    genderCanvas = Chart({
+                    fullyVaxxedCanvas = Chart({
                         canvas: $("#fully-vaxxed-canvas"),
                         dataset: data.fullyVaxxed,
                         type: 'doughnut',
@@ -128,7 +151,7 @@
                     });
 
                     // Load Voter Chart
-                    genderCanvas = Chart({
+                    voterCanvas = Chart({
                         canvas: $("#voter-canvas"),
                         dataset: data.voter,
                         type: 'doughnut',
@@ -137,6 +160,34 @@
                     });
                 }
             });
+        });
+
+        // Filter Document Requests Chart
+        $("#filter-request-date-form").on('submit', function(e) {
+            e.preventDefault();
+
+            $.post($(this).attr('action'), $(this).serializeArray(), function(data, status) {
+                requestCanvas.destroy();
+
+                requestCanvas = Chart({
+                    canvas: $("#request-canvas"),
+                    dataset: data.requests,
+                    type: 'line',
+                    label: "Requests",
+                });
+            }).fail(function(xhr, status, error) {
+                Toast.fire({
+                    icon: 'error', 
+                    text: `Error excuting request. Reason: ${error}. Please try again.`
+                });
+            });
+        });
+
+        // Reset Document Request Chart
+        $('button#reset-button').click(function() {
+            let form = $("#filter-request-date-form");
+            form.get(0).reset();
+            form.triggerHandler('submit');
         });
     </script>
 </x-app-layout>

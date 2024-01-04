@@ -16,7 +16,7 @@
             <x-cell type="td">{{$request->status}}</x-cell>
             <x-cell type="td">{{Carbon\Carbon::parse($request->created_at)->format('M d, Y \a\\t h:i A')}}</x-cell>
             <x-cell type="td">{{Carbon\Carbon::parse($request->updated_at)->format('M d, Y \a\\t h:i A')}}</x-cell>
-            <x-cell type="td">
+            <x-cell type="td" align="center">
                 <a href="{{route('resident.history.preview', $request)}}" class="show-history-preview-link" x-data x-on:click.prevent="$dispatch('open-modal', 'show-history-preview')">
                     <x-primary-button>View</x-primary-button>
                 </a>

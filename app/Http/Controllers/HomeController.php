@@ -16,7 +16,7 @@ class HomeController extends Controller
         try{
             $residents = Resident::get();
             // Get Count by Document Requests per Day
-            $reqs = DocumentRequest::where('created_at', '>=', Carbon::now()->subDays(13))->get()->groupBy(function($col) {
+            $reqs = DocumentRequest::where('created_at', '>=', Carbon::now()->subDays(13)->format('Y-m-d'))->get()->groupBy(function($col) {
                 // return ucfirst($col->status->value);
                 return $col->created_at->format('M d');
             })->map(function($value, $key) {
@@ -24,8 +24,8 @@ class HomeController extends Controller
             });
             
             // Assing value for each day
-            $dateRange = CarbonPeriod::create(Carbon::now()->subDays(13), Carbon::now());
-            foreach($dateRange as $key => $value) {
+            $dateRange = CarbonPeriod::create(Carbon::now()->subDays(13)->format('Y-m-d'), Carbon::now());
+            foreach($dateRange as $value) {
                 $requests[$value->format("M d")] = $reqs[$value->format("M d")] ?? 0;
             }
             
@@ -75,6 +75,28 @@ class HomeController extends Controller
         catch(\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Failed to retrieve statistics. Please try again']);
         }
+    }
+
+    public function filterData(Request $request)
+    {
+        // Get Count by Document Requests per Day
+        $start = Carbon::parse($request->date_from);
+        $end = Carbon::parse($request->date_to);
+        $requests = array();
+
+        $reqs = DocumentRequest::where('created_at', '>=', $start)->get()->groupBy(function($col) {
+            return $col->created_at->format('M d');
+        })->map(function($value, $key) {
+            return $value->count();
+        });
+        
+        // Assing value for each day
+        $dateRange = CarbonPeriod::create($start, $end);
+        foreach($dateRange as $value) {
+            $requests[$value->format("M d")] = $reqs[$value->format("M d")] ?? 0;
+        }
+
+        return response()->json(['success' => true, 'requests' => $requests]);
     }
 
     public function resident()

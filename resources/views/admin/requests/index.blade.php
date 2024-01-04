@@ -13,7 +13,7 @@
                     @include('admin.requests.filter')
                 </div>
                 <div class="flex w-full sm:w-2/3 md:w-1/2 gap-x-2">
-                    <x-text-input type="text" name="search" id="search-field" placeholder="Search here... " class="w-full" />
+                    <x-text-input type="text" name="search" id="search-field" placeholder="Search here... " class="w-full" autocomplete="off" />
                     <x-primary-button type="submit">Search</x-primary-button>
                 </div>
             </form>
